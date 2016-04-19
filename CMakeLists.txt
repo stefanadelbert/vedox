@@ -172,24 +172,22 @@ endif()
 # Install (sudo make install)
 # ---------------------------------------------------------
 
-if(NOT CMAKE_INSTALL_PREFIX)
-   set(CMAKE_INSTALL_PREFIX /usr/)
-endif(NOT CMAKE_INSTALL_PREFIX)
-
-# Check if it is a 64 bit system
-if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT LIB_SUFFIX)
-    set(LIB_SUFFIX "64")
+if (lib)
+  # Install the dynamic library
+  install(TARGETS redox DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
 
-# Install the dynamic library to /usr/lib[64]
-install(TARGETS redox DESTINATION lib${LIB_SUFFIX})
+if (static_lib)
+  # Install the static library
+  install(TARGETS redox_static DESTINATION ${CMAKE_INSTALL_LIBDIR})
+endif()
 
 # Install the headers into /usr/include/redox
-install(FILES ${INC_REDOX_CORE} DESTINATION include/redox)
-install(FILES ${INC_REDOX_UTILS} DESTINATION include/redox/utils)
+install(FILES ${INC_REDOX_CORE} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/redox)
+install(FILES ${INC_REDOX_UTILS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/redox/utils)
 
 # Install the top-level header directly into /usr/include
-install(FILES ${INC_REDOX_WRAPPER} DESTINATION include)
+install(FILES ${INC_REDOX_WRAPPER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # ---------------------------------------------------------
 # Create system package (make package)
